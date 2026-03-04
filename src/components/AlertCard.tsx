@@ -1,0 +1,75 @@
+'use client';
+
+import { Alert, Severity } from '@/hooks/useAlerts';
+
+const severityConfig: Record<Severity, { color: string; dim: string; label: string; icon: string }> = {
+    critical: { color: 'var(--red)', dim: 'var(--red-dim)', label: 'CRITICAL', icon: '⚠' },
+    warning: { color: 'var(--orange)', dim: 'var(--orange-dim)', label: 'WARNING', icon: '△' },
+    info: { color: 'var(--blue)', dim: 'var(--blue-dim)', label: 'INFO', icon: 'ℹ' },
+    resolved: { color: 'var(--green)', dim: 'var(--green-dim)', label: 'RESOLVED', icon: '✓' },
+};
+
+function timeAgo(date: Date): string {
+    const s = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (s < 60) return `${s}s ago`;
+    if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+    return `${Math.floor(s / 3600)}h ago`;
+}
+
+interface AlertCardProps {
+    alert: Alert;
+    onResolve: (id: string) => void;
+}
+
+export default function AlertCard({ alert, onResolve }: AlertCardProps) {
+    const cfg = severityConfig[alert.severity];
+
+    return (
+        <div
+            className={`rounded-xl p-4 transition-all ${alert.isNew ? 'animate-slide-in' : ''} ${alert.severity === 'critical' && alert.isNew ? 'animate-shake' : ''}`}
+            style={{
+                background: 'var(--bg-card)',
+                border: `1px solid ${alert.severity === 'critical' ? cfg.color + '44' : 'var(--border)'}`,
+            }}
+        >
+            {/* Top row */}
+            <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-center gap-2 min-w-0">
+                    <span
+                        className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs"
+                        style={{ background: cfg.dim, color: cfg.color }}
+                    >
+                        {cfg.icon}
+                    </span>
+                    <div className="min-w-0">
+                        <h3 className="text-sm font-medium text-[var(--text)] truncate">{alert.title}</h3>
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded" style={{ background: cfg.dim, color: cfg.color }}>
+                                {cfg.label}
+                            </span>
+                            <span className="text-[10px] text-[var(--text-3)]">{alert.zone}</span>
+                        </div>
+                    </div>
+                </div>
+                <span className="text-[10px] text-[var(--text-3)] flex-shrink-0 mt-0.5 mono">{timeAgo(alert.timestamp)}</span>
+            </div>
+
+            {/* Description */}
+            <p className="text-xs text-[var(--text-2)] leading-relaxed mb-3">{alert.description}</p>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between">
+                <span className="text-[10px] text-[var(--text-3)]">{alert.source}</span>
+                {alert.severity !== 'resolved' && (
+                    <button
+                        onClick={() => onResolve(alert.id)}
+                        className="text-[10px] font-medium px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                        style={{ background: 'var(--green-dim)', color: 'var(--green)' }}
+                    >
+                        Resolve
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+}

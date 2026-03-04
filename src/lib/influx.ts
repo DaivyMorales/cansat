@@ -1,0 +1,9 @@
+import { InfluxDB } from '@influxdata/influxdb-client';
+
+const url = process.env.INFLUX_URL!;
+const token = process.env.INFLUX_TOKEN!;
+const org = process.env.INFLUX_ORG!;
+
+export const influx = new InfluxDB({ url, token });
+export const queryApi = influx.getQueryApi(org);
+export const BUCKET = process.env.INFLUX_BUCKET!;
