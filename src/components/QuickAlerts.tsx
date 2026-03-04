@@ -11,12 +11,12 @@ interface QuickAlert {
 }
 
 const presets: QuickAlert[] = [
-    { label: 'Fire', icon: '🔥', severity: 'critical', title: 'Fire Emergency', description: 'Fire reported in the neighborhood. Evacuate the area immediately and call 911.' },
-    { label: 'Flood', icon: '🌊', severity: 'critical', title: 'Flood Alert', description: 'Rising water levels detected. Move to higher ground immediately.' },
-    { label: 'Break-In', icon: '🚨', severity: 'critical', title: 'Break-In Reported', description: 'Unauthorized entry reported. Lock doors and contact authorities.' },
-    { label: 'Medical', icon: '🏥', severity: 'warning', title: 'Medical Emergency', description: 'Medical emergency in progress. Paramedics have been notified.' },
-    { label: 'Power Out', icon: '⚡', severity: 'info', title: 'Power Outage', description: 'Power outage affecting the area. Utility company has been notified.' },
-    { label: 'Lost Pet', icon: '🐾', severity: 'info', title: 'Lost Pet Alert', description: 'A pet has been reported missing. Please keep an eye out in your area.' },
+    { label: 'Incendio', icon: '🔥', severity: 'critical', title: 'Emergencia de Incendio', description: 'Incendio reportado en el vecindario. Evacúe el área inmediatamente y llame al 911.' },
+    { label: 'Inundación', icon: '🌊', severity: 'critical', title: 'Alerta de Inundación', description: 'Niveles de agua elevados detectados. Diríjase a terreno elevado inmediatamente.' },
+    { label: 'Robo', icon: '🚨', severity: 'critical', title: 'Robo Reportado', description: 'Entrada no autorizada reportada. Asegure puertas y contacte a las autoridades.' },
+    { label: 'Médica', icon: '🏥', severity: 'warning', title: 'Emergencia Médica', description: 'Emergencia médica en curso. Los paramédicos han sido notificados.' },
+    { label: 'Apagón', icon: '⚡', severity: 'info', title: 'Corte de Energía', description: 'Corte de energía eléctrica en el área. La empresa de servicios ha sido notificada.' },
+    { label: 'Mascota', icon: '🐾', severity: 'info', title: 'Mascota Perdida', description: 'Se ha reportado una mascota perdida. Por favor esté atento en su área.' },
 ];
 
 interface QuickAlertsProps {
@@ -29,12 +29,12 @@ export default function QuickAlerts({ onSend }: QuickAlertsProps) {
             className="rounded-xl p-4"
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
         >
-            <h2 className="text-[11px] text-[var(--text-3)] tracking-wide uppercase mb-3">Quick Alerts</h2>
+            <h2 className="text-[11px] text-[var(--text-3)] tracking-wide uppercase mb-3">Alertas Rápidas</h2>
             <div className="grid grid-cols-3 gap-2">
                 {presets.map((p) => (
                     <button
                         key={p.label}
-                        onClick={() => onSend({ title: p.title, description: p.description, severity: p.severity, zone: 'My Area', source: 'Manual Report' })}
+                        onClick={() => onSend({ title: p.title, description: p.description, severity: p.severity, zone: 'Mi Zona', source: 'Reporte Manual' })}
                         className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl transition-all cursor-pointer hover:scale-[1.03] active:scale-[0.97]"
                         style={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }}
                     >

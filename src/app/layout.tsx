@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Neighborhood Alert System',
-  description: 'Real-time community safety alert system for your neighborhood.',
+  title: 'Sistema de Alertas Vecinal',
+  description: 'Sistema de alertas comunitarias en tiempo real para tu vecindario.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

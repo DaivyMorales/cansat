@@ -7,21 +7,21 @@ interface NeighborhoodMapProps {
 }
 
 const zones = [
-    { id: 'Zone A', path: 'M 10 10 L 48 10 L 48 35 L 10 35 Z', cx: 29, cy: 22 },
-    { id: 'Zone B', path: 'M 52 10 L 90 10 L 90 35 L 52 35 Z', cx: 71, cy: 22 },
-    { id: 'Block A', path: 'M 10 39 L 30 39 L 30 58 L 10 58 Z', cx: 20, cy: 48 },
-    { id: 'Block B', path: 'M 34 39 L 66 39 L 66 58 L 34 58 Z', cx: 50, cy: 48 },
-    { id: 'Block C', path: 'M 70 39 L 90 39 L 90 58 L 70 58 Z', cx: 80, cy: 48 },
-    { id: 'Zone C', path: 'M 10 62 L 48 62 L 48 90 L 10 90 Z', cx: 29, cy: 76 },
-    { id: 'Zone D', path: 'M 52 62 L 90 62 L 90 90 L 52 90 Z', cx: 71, cy: 76 },
-    { id: 'Park Area', path: 'M 35 28 L 65 28 L 65 42 L 35 42 Z', cx: 50, cy: 35 },
+    { id: 'Zona A', path: 'M 10 10 L 48 10 L 48 35 L 10 35 Z', cx: 29, cy: 22 },
+    { id: 'Zona B', path: 'M 52 10 L 90 10 L 90 35 L 52 35 Z', cx: 71, cy: 22 },
+    { id: 'Bloque A', path: 'M 10 39 L 30 39 L 30 58 L 10 58 Z', cx: 20, cy: 48 },
+    { id: 'Bloque B', path: 'M 34 39 L 66 39 L 66 58 L 34 58 Z', cx: 50, cy: 48 },
+    { id: 'Bloque C', path: 'M 70 39 L 90 39 L 90 58 L 70 58 Z', cx: 80, cy: 48 },
+    { id: 'Zona C', path: 'M 10 62 L 48 62 L 48 90 L 10 90 Z', cx: 29, cy: 76 },
+    { id: 'Zona D', path: 'M 52 62 L 90 62 L 90 90 L 52 90 Z', cx: 71, cy: 76 },
+    { id: 'Parque', path: 'M 35 28 L 65 28 L 65 42 L 35 42 Z', cx: 50, cy: 35 },
 ];
 
 export default function NeighborhoodMap({ alerts }: NeighborhoodMapProps) {
     const activeAlerts = alerts.filter((a) => a.severity !== 'resolved');
 
     function getZoneSeverity(zoneId: string): string | null {
-        const zoneAlerts = activeAlerts.filter((a) => a.zone === zoneId || a.zone === 'All Zones');
+        const zoneAlerts = activeAlerts.filter((a) => a.zone === zoneId || a.zone === 'Todas las Zonas' || a.zone === 'Sensor Network' || a.zone === 'Mi Zona');
         if (zoneAlerts.some((a) => a.severity === 'critical')) return 'var(--red)';
         if (zoneAlerts.some((a) => a.severity === 'warning')) return 'var(--orange)';
         if (zoneAlerts.length > 0) return 'var(--blue)';
@@ -29,7 +29,7 @@ export default function NeighborhoodMap({ alerts }: NeighborhoodMapProps) {
     }
 
     function getZoneAlertCount(zoneId: string): number {
-        return activeAlerts.filter((a) => a.zone === zoneId || a.zone === 'All Zones').length;
+        return activeAlerts.filter((a) => a.zone === zoneId || a.zone === 'Todas las Zonas' || a.zone === 'Sensor Network' || a.zone === 'Mi Zona').length;
     }
 
     return (
@@ -38,13 +38,12 @@ export default function NeighborhoodMap({ alerts }: NeighborhoodMapProps) {
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
         >
             <div className="flex items-center justify-between">
-                <h2 className="text-[11px] text-[var(--text-3)] tracking-wide uppercase">Neighborhood Map</h2>
-                <span className="text-[10px] text-[var(--text-3)]">{activeAlerts.length} active</span>
+                <h2 className="text-[11px] text-[var(--text-3)] tracking-wide uppercase">Mapa del Vecindario</h2>
+                <span className="text-[10px] text-[var(--text-3)]">{activeAlerts.length} activas</span>
             </div>
 
             <div className="relative rounded-lg overflow-hidden" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                 <svg viewBox="0 0 100 100" className="w-full" style={{ height: 220 }}>
-                    {/* Grid lines */}
                     {[20, 40, 60, 80].map((v) => (
                         <g key={v}>
                             <line x1={v} y1={0} x2={v} y2={100} stroke="var(--border)" strokeWidth="0.15" />
@@ -52,7 +51,6 @@ export default function NeighborhoodMap({ alerts }: NeighborhoodMapProps) {
                         </g>
                     ))}
 
-                    {/* Zone blocks */}
                     {zones.map((z) => {
                         const color = getZoneSeverity(z.id);
                         const count = getZoneAlertCount(z.id);
@@ -80,19 +78,17 @@ export default function NeighborhoodMap({ alerts }: NeighborhoodMapProps) {
                         );
                     })}
 
-                    {/* Roads */}
                     <line x1={50} y1={5} x2={50} y2={95} stroke="var(--text-3)" strokeWidth="0.2" strokeDasharray="1 1" />
                     <line x1={5} y1={50} x2={95} y2={50} stroke="var(--text-3)" strokeWidth="0.2" strokeDasharray="1 1" />
                 </svg>
             </div>
 
-            {/* Legend */}
             <div className="flex items-center gap-4 justify-center">
                 {[
-                    { label: 'Critical', color: 'var(--red)' },
-                    { label: 'Warning', color: 'var(--orange)' },
+                    { label: 'Crítico', color: 'var(--red)' },
+                    { label: 'Advertencia', color: 'var(--orange)' },
                     { label: 'Info', color: 'var(--blue)' },
-                    { label: 'Clear', color: 'var(--text-3)' },
+                    { label: 'Libre', color: 'var(--text-3)' },
                 ].map(({ label, color }) => (
                     <div key={label} className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-sm" style={{ background: color }} />

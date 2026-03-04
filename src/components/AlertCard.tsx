@@ -3,17 +3,17 @@
 import { Alert, Severity } from '@/hooks/useAlerts';
 
 const severityConfig: Record<Severity, { color: string; dim: string; label: string; icon: string }> = {
-    critical: { color: 'var(--red)', dim: 'var(--red-dim)', label: 'CRITICAL', icon: '⚠' },
-    warning: { color: 'var(--orange)', dim: 'var(--orange-dim)', label: 'WARNING', icon: '△' },
+    critical: { color: 'var(--red)', dim: 'var(--red-dim)', label: 'CRÍTICO', icon: '⚠' },
+    warning: { color: 'var(--orange)', dim: 'var(--orange-dim)', label: 'ADVERTENCIA', icon: '△' },
     info: { color: 'var(--blue)', dim: 'var(--blue-dim)', label: 'INFO', icon: 'ℹ' },
-    resolved: { color: 'var(--green)', dim: 'var(--green-dim)', label: 'RESOLVED', icon: '✓' },
+    resolved: { color: 'var(--green)', dim: 'var(--green-dim)', label: 'RESUELTO', icon: '✓' },
 };
 
 function timeAgo(date: Date): string {
     const s = Math.floor((Date.now() - date.getTime()) / 1000);
-    if (s < 60) return `${s}s ago`;
-    if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-    return `${Math.floor(s / 3600)}h ago`;
+    if (s < 60) return `hace ${s}s`;
+    if (s < 3600) return `hace ${Math.floor(s / 60)}m`;
+    return `hace ${Math.floor(s / 3600)}h`;
 }
 
 interface AlertCardProps {
@@ -66,7 +66,7 @@ export default function AlertCard({ alert, onResolve }: AlertCardProps) {
                         className="text-[10px] font-medium px-2.5 py-1 rounded-md transition-colors cursor-pointer"
                         style={{ background: 'var(--green-dim)', color: 'var(--green)' }}
                     >
-                        Resolve
+                        Resolver
                     </button>
                 )}
             </div>
